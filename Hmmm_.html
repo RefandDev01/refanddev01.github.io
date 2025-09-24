@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>For Nadyaa.</title>
+<style>
+  @font-face {
+    font-family: "CustomNadFont";
+    src: url("https://cdn.jsdelivr.net/gh/RefandDev01/SUGAR-FLARE-MYFONT/SugarFlareDemoRegular-4nGED.otf") format("woff2");
+  }
+  * { box-sizing: border-box; }
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: "CustomNadFont", sans-serif;
+    background: #fff;
+    overflow-x: hidden;
+  }
+  .container {
+    height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    padding: 20px;
+  }
+  .slider {
+    max-width: 480px; width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+  }
+  .slides-wrapper {
+    display: flex;
+    transition: transform 0.3s ease;
+    width: 200%;
+  }
+  .slide {
+    padding: 30px;
+    flex-shrink: 0;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.5; /* spasi teks lebih rapat */
+    color: #111;
+    height: 100%;
+    overflow-y: auto;
+    width: 50%;
+  }
+  #slide2 {
+    width: 40%; /* perlebar slide 2 sesuai permintaan */
+  }
+  .watermark {
+    position: absolute;
+    right: 2px;
+    bottom: 30px; /* dinaikkan agar tidak menabrak kotak */
+    font-size: 12px;
+    color: rgba(0,0,0,0.2);
+    transform: rotate(-90deg);
+    transform-origin: center;
+    user-select: none;
+    pointer-events: none;
+    font-family: "CustomNadFont", sans-serif;
+  }
+  .dots {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    user-select: none;
+  }
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #bbb;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .dot.active {
+    background: #333;
+  }
+  .slider.touch-active {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="slider" id="slider">
+    <div class="slides-wrapper" id="slidesWrapper">
+      <div class="slide" id="slide1">
+        Nad.<br><br>
+        Aku ndak tau itu nanti mousenya bakal berguna apa ndak pas kamu udah masuk ke Sma. tapi yang jelas aku udah bener bener ikhlas ngasih itu, Hehe.<br><br>
+        Jadi tolong dijaga ya mouse nya, entah nanti bakal berguna apa ndak.
+      </div>
+      <div class="slide" id="slide2">
+        Owh ya kalau kamu mau ngasih sesuatu ke aku, Kasih aja, Aku bakalan nerima kok nad hehe.
+      </div>
+    </div>
+    <div class="watermark">@nddwanz.</div>
+    <div class="dots" id="dotsContainer">
+      <div class="dot active" data-slide="0"></div>
+      <div class="dot" data-slide="1"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const slidesWrapper = document.getElementById('slidesWrapper');
+  const slider = document.getElementById('slider');
+  const dots = document.querySelectorAll('.dot');
+  let startX = 0, currentTranslate = 0, prevTranslate = 0, dragging = false;
+  const slideCount = 2;
+  let slideWidth = slider.offsetWidth;
+
+  function updateDots(activeIndex) {
+    dots.forEach((dot,i) => dot.classList.toggle('active', i===activeIndex));
+  }
+  function getSlideIndex(translateX) {
+    return Math.round(-translateX / slideWidth);
+  }
+
+  slider.addEventListener('touchstart', touchStart);
+  slider.addEventListener('mousedown', touchStart);
+  slider.addEventListener('touchend', touchEnd);
+  slider.addEventListener('mouseup', touchEnd);
+  slider.addEventListener('mouseleave', touchEnd);
+  slider.addEventListener('touchmove', touchMove);
+  slider.addEventListener('mousemove', touchMove);
+
+  dots.forEach(dot => dot.addEventListener('click', e => {
+    const idx = parseInt(e.target.dataset.slide);
+    prevTranslate = -idx * slideWidth;
+    currentTranslate = prevTranslate;
+    setSliderPosition();
+    updateDots(idx);
+  }));
+
+  function touchStart(e){
+    dragging=true;
+    slider.classList.add('touch-active');
+    startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  }
+  function touchEnd(){
+    dragging=false;
+    slider.classList.remove('touch-active');
+    const movedBy = currentTranslate - prevTranslate;
+    if(movedBy < -slideWidth/4 && prevTranslate > -slideWidth*(slideCount-1)) prevTranslate -= slideWidth;
+    else if(movedBy > slideWidth/4 && prevTranslate < 0) prevTranslate += slideWidth;
+    currentTranslate=prevTranslate;
+    setSliderPosition();
+    updateDots(getSlideIndex(currentTranslate));
+  }
+  function touchMove(e){
+    if(!dragging) return;
+    const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    currentTranslate = prevTranslate + currentPosition - startX;
+    setSliderPosition();
+    updateDots(Math.min(Math.max(getSlideIndex(currentTranslate),0),slideCount-1));
+  }
+  function setSliderPosition(){ slidesWrapper.style.transform = `translateX(${currentTranslate}px)`; }
+
+  window.addEventListener('resize', () => {
+    slideWidth = slider.offsetWidth;
+    currentTranslate = 0;
+    prevTranslate = 0;
+    setSliderPosition();
+    updateDots(0);
+  });
+</script>
+</body>
+</html>
