@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>gabut Nad, hehe🐿️</title>
+
+<style>
+@font-face {
+  font-family: "Valerian";
+  src: url("https://cdn.jsdelivr.net/gh/RefandDev01/MyFontt/Okaytext%20Standard%20W00%20Regular.otf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: "Valerian", cursive;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+/* ===== BACKGROUND ===== */
+.bg {
+  position: fixed;
+  inset: 0;
+  transition: opacity 1.2s ease;
+}
+#bgNext { z-index: -3; }
+#bgCurrent { z-index: -2; opacity: 1; }
+
+/* ===== SCENE ===== */
+.scene {
+  position: absolute;
+  inset: env(safe-area-inset-top) env(safe-area-inset-right)
+         env(safe-area-inset-bottom) env(safe-area-inset-left);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1s ease;
+}
+.hidden { display: none; }
+.fade-out { opacity: 0; }
+
+/* ===== OPENING ===== */
+.scene-1 {
+  flex-direction: column;
+}
+
+.year {
+  font-size: clamp(96px, 14vw, 180px);
+  line-height: 1;
+}
+
+.row {
+  width: min(90%, 700px);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  font-size: clamp(24px, 4vw, 56px);
+}
+
+.row span:first-child { justify-self: start; }
+.row span:nth-child(2) { justify-self: center; }
+.row span:last-child { justify-self: end; }
+
+.bottom {
+  margin-top: 2vh;
+}
+
+.word {
+  opacity: 0;
+}
+
+/* ===== ANIMATIONS ===== */
+.from-left { animation: fromLeft .8s ease forwards; }
+.from-right { animation: fromRight .8s ease forwards; }
+.from-bottom { animation: fromBottom .8s ease forwards; }
+
+@keyframes fromLeft {
+  from { transform: translateX(-60px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes fromRight {
+  from { transform: translateX(60px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes fromBottom {
+  from { transform: translateY(60px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ===== MAIN TEXT ===== */
+.text {
+  max-width: 90%;
+  text-align: center;
+  font-size: clamp(20px, 3.5vw, 42px);
+  transform: scale(0.9);
+  opacity: 1;
+  transition: transform 1.2s ease, opacity .8s ease;
+}
+
+.text.fade-out {
+  opacity: 0;
+}
+
+/* ===== MOBILE FINE TUNE ===== */
+@media (max-width: 480px) {
+  .year {
+    font-size: clamp(88px, 18vw, 150px);
+  }
+
+  .row {
+    font-size: clamp(20px, 6vw, 40px);
+  }
+
+  .text {
+    font-size: clamp(18px, 5vw, 32px);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg" id="bgNext"></div>
+<div class="bg" id="bgCurrent" style="background:#F8DDE6"></div>
+
+<!-- OPENING -->
+<div class="scene scene-1" id="scene1">
+  <div class="row">
+    <span class="word" id="before">Before</span>
+    <span class="word" id="the">the</span>
+    <span class="word" id="end">end</span>
+  </div>
+
+  <div class="year word" id="year">2025</div>
+
+  <div class="row bottom">
+    <span class="word" id="i">I</span>
+    <span class="word" id="wanna">wanna</span>
+    <span class="word" id="say">say</span>
+  </div>
+</div>
+
+<!-- TEXT -->
+<div class="scene hidden" id="sceneText">
+  <div class="text" id="text"></div>
+</div>
+
+<script>
+const scene1 = document.getElementById("scene1");
+const sceneText = document.getElementById("sceneText");
+const textEl = document.getElementById("text");
+const bgCurrent = document.getElementById("bgCurrent");
+const bgNext = document.getElementById("bgNext");
+
+const backgrounds = [
+ "#FFFFFF","#FFFFFF","#F8DDE6","#F8DDE6","#FFFFFF","#FFFFFF",
+ "#F8DDE6","#F8DDE6","#FFFFFF","#F8DDE6","#FFFFFF","#F8DDE6",
+ "#FFFFFF","#F8DDE6","#FFFFFF","#F8DDE6","#FFFFFF","#F8DDE6",
+ "#F8DDE6","#FFFFFF","#FFFFFF","#F8DDE6","#FFFFFF"
+];
+
+const texts = [
+ "Thank you for, believing in me",
+ "Thank you for, staying by my side",
+ "Thank you for, never giving up",
+ "Thank you for, understanding me",
+ "Thank you for, supporting my dreams",
+ "Thank you for, loving my truly",
+ "Thank you for, all you kindness",
+ "Thank you for, every small moments",
+ "Thank you for, motivating me daily",
+ "Thank you for, trusting my vision",
+ "Thank you for, your pure energy",
+ "Thank you for, your patience",
+ "Thank you for, making me stronger",
+ "Thank you for, wiping my tears",
+ "Thank you for, laughing with me",
+ "Thank you for, your support",
+ "Thank you for, every late-light talk",
+ "Thank you for, accepting real me",
+ "Thank you for, being my safe place",
+ "Thank you for, being there",
+ "Thank you for, choosing me",
+ "Thank you for, not judging me",
+ "Thank you for, loving me at my worst"
+];
+
+let idx = 0;
+
+/* OPENING */
+setTimeout(()=>before.classList.add("from-left"),200);
+setTimeout(()=>year.classList.add("from-bottom"),600);
+setTimeout(()=>end.classList.add("from-right"),1000);
+setTimeout(()=>i.classList.add("from-bottom"),1400);
+setTimeout(()=>wanna.classList.add("from-right"),1800);
+setTimeout(()=>the.classList.add("from-left"),2200);
+setTimeout(()=>say.classList.add("from-right"),2600);
+
+/* OPENING FADE OUT */
+setTimeout(()=>scene1.classList.add("fade-out"),4200);
+
+/* SWITCH SCENE */
+setTimeout(()=>{
+  scene1.classList.add("hidden");
+  sceneText.classList.remove("hidden");
+  showText();
+},5200);
+
+function showText(){
+  bgNext.style.background = backgrounds[idx];
+  bgCurrent.style.opacity = 0;
+
+  setTimeout(()=>{
+    bgCurrent.style.background = backgrounds[idx];
+    bgCurrent.style.opacity = 1;
+
+    textEl.classList.add("fade-out");
+    textEl.textContent = texts[idx];
+    textEl.style.transform = `scale(${0.9 + idx * 0.03})`;
+
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>textEl.classList.remove("fade-out"));
+    });
+
+    const stay = (idx === texts.length - 1) ? 3600 : 1800;
+
+    setTimeout(()=>textEl.classList.add("fade-out"), stay);
+
+    setTimeout(()=>{
+      idx++;
+      if(idx < texts.length) showText();
+    }, stay + 800);
+
+  },1200);
+}
+</script>
+
+</body>
+</html>
