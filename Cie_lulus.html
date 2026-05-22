@@ -1,371 +1,552 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Congratulations for You</title>
-    <style>
-        /* ==========================================================================
-           RESET & CONTAINER STYLE
-           ========================================================================== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #eef5f9;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            perspective: 2000px; /* Sensitivitas lengkungan 3D */
-        }
+<title>Congrats yaa, Hehe.🐿</title>
 
-        .memo-book {
-            position: relative;
-            width: 580px;
-            height: 580px;
-            max-width: 90vw;
-            max-height: 90vw;
-            aspect-ratio: 1 / 1;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
-            border-radius: 16px;
-            background: #fff;
-        }
+<style>
 
-        @media (min-width: 1024px) {
-            .memo-book {
-                width: 620px;
-                height: 620px;
-            }
-        }
+/* ==========================================================================
+   FONT
+   ========================================================================== */
 
-        /* ==========================================================================
-           PAGE ELEMENT WITH INTERACTIVE FLIP & CURL
-           ========================================================================== */
-        .page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            transform-origin: left center;
-            transform-style: preserve-3d;
-            cursor: grab;
-            border-radius: 16px;
-            will-change: transform, z-index;
-        }
+@font-face{
+    font-family:'Oval';
+    src:url('https://cdn.jsdelivr.net/gh/RefandDev01/FONT_CANVA_OVAL/Oval-font.otf') format('opentype');
+}
 
-        .page:active {
-            cursor: grabbing;
-        }
+/* ==========================================================================
+   RESET
+   ========================================================================== */
 
-        /* Sisi Depan Kertas Memo (Menggunakan Link Gambar Baru Kamu) */
-        .page-front {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #fafdf6;
-            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiivxXH5D7QK8B2aNZbf1RFPcNXbVqjbk7izpDXUAh3yyiWntq8KVB3tl_1ONSsRO0bgSzwrwz2_pCvsjcYtgXvPbmrgkKzO8mZF8R3c07YoGpodWpLoA2Pvr7Hydm_LR68tNFj6Y33jpVOl9-l7SYQATgBkEeRAUWitGz_4ueGx31LUUl6cUeiDIfaAAw4/s1254/ChatGPT%20Image%2021%20Mei%202026,%2015.43.27.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            padding: 14% 14% 12% 14%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.02);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.01);
-            pointer-events: none; /* Mengunci text agar drag lancar */
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+}
 
-        /* Sisi Belakang Kertas Memo (Efek Gradasi Gulungan) */
-        .page-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            transform: rotateY(180deg);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border-radius: 16px;
-            background: linear-gradient(to right, #ffffff 0%, #f4f4f4 85%, #e2e2e2 95%, #b8b8b8 100%);
-            box-shadow: inset 10px 0 20px rgba(0,0,0,0.15);
-        }
+body{
+    width:100%;
+    height:100vh;
 
-        /* Transisi halus saat jari dilepas */
-        .page.smooth-return {
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-        }
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-        /* URUTAN TUMPUKAN HALAMAN (Z-INDEX) */
-        .page:nth-child(1) { z-index: 10; }
-        .page:nth-child(2) { z-index: 9; }
-        .page:nth-child(3) { z-index: 8; }
-        .page:nth-child(4) { z-index: 7; }
-        .page:nth-child(5) { z-index: 6; }
-        .page:nth-child(6) { z-index: 5; }
-        .page:nth-child(7) { z-index: 4; }
-        .page:nth-child(8) { z-index: 3; }
-        .page:nth-child(9) { z-index: 2; }
-        .page:nth-child(10) { z-index: 1; }
+    overflow:hidden;
 
-        /* ==========================================================================
-           TYPOGRAPHY TEXT
-           ========================================================================== */
-        .title-text {
-            font-size: calc(1.35rem + 0.6vw);
-            font-weight: 700;
-            color: #3e5a75;
-            line-height: 1.3;
-            margin-bottom: 24px;
-        }
+    background:#eef5f9;
 
-        .sub-text {
-            font-size: calc(0.95rem + 0.15vw);
-            font-weight: 400;
-            color: #657e96;
-            line-height: 1.6;
-        }
+    font-family:'Oval',sans-serif;
 
-        .first-slide .title-text {
-            font-size: calc(1.7rem + 0.7vw);
-            color: #2c4257;
-        }
+    perspective:2200px;
+}
 
-        .drag-indicator {
-            position: absolute;
-            bottom: 5%;
-            font-size: calc(0.7rem + 0.1vw);
-            color: #a5bccc;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-weight: 600;
-            animation: pulseFade 2.5s infinite;
-        }
+/* ==========================================================================
+   BOOK
+   ========================================================================== */
 
-        @keyframes pulseFade {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
-        }
-    </style>
+.memo-book{
+    position:relative;
+
+    width:620px;
+    height:620px;
+
+    max-width:92vw;
+    max-height:92vw;
+
+    aspect-ratio:1/1;
+
+    border-radius:20px;
+
+    background:#fff;
+
+    box-shadow:
+    0 30px 60px rgba(0,0,0,0.12);
+}
+
+/* ==========================================================================
+   PAGE
+   ========================================================================== */
+
+.page{
+    position:absolute;
+
+    width:100%;
+    height:100%;
+
+    top:0;
+    left:0;
+
+    border-radius:20px;
+
+    transform-origin:left center;
+    transform-style:preserve-3d;
+
+    cursor:grab;
+
+    will-change:transform,z-index;
+}
+
+.page:active{
+    cursor:grabbing;
+}
+
+/* ==========================================================================
+   PAGE FRONT
+   ========================================================================== */
+
+.page-front{
+    position:absolute;
+
+    width:100%;
+    height:100%;
+
+    top:0;
+    left:0;
+
+    border-radius:20px;
+
+    background-image:url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiivxXH5D7QK8B2aNZbf1RFPcNXbVqjbk7izpDXUAh3yyiWntq8KVB3tl_1ONSsRO0bgSzwrwz2_pCvsjcYtgXvPbmrgkKzO8mZF8R3c07YoGpodWpLoA2Pvr7Hydm_LR68tNFj6Y33jpVOl9-l7SYQATgBkEeRAUWitGz_4ueGx31LUUl6cUeiDIfaAAw4/s1254/ChatGPT%20Image%2021%20Mei%202026,%2015.43.27.png');
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    /* DESKTOP POSITION (TETAP PRESIED) */
+    padding-top:28%;
+    padding-right:18%;
+    padding-bottom:24%;
+    padding-left:18%;
+
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+
+    pointer-events:none;
+}
+
+/* ==========================================================================
+   PAGE BACK
+   ========================================================================== */
+
+.page-back{
+    position:absolute;
+
+    width:100%;
+    height:100%;
+
+    top:0;
+    left:0;
+
+    border-radius:20px;
+
+    transform:rotateY(180deg);
+
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+
+    background:
+    linear-gradient(
+        to right,
+        #ffffff 0%,
+        #f5f5f5 82%,
+        #dfdfdf 94%,
+        #bbbbbb 100%
+    );
+
+    box-shadow:
+    inset 12px 0 18px rgba(0,0,0,0.14);
+}
+
+/* ==========================================================================
+   TEXT (NORMAL WEIGHT - NO BOLD)
+   ========================================================================== */
+
+.sub-text{
+    width:100%;
+    color:#5c8fc8;
+    font-weight: normal !important;
+    font-size:clamp(1rem,1.15vw,1.2rem);
+    line-height:1.8;
+    letter-spacing:0.3px;
+    text-shadow:0 1px 1px rgba(255,255,255,0.8);
+}
+
+/* Mengatur spasi break agar jarak antar baris tidak terlalu renggang */
+.sub-text br {
+    content: "";
+    margin: 4px 0;
+    display: block;
+}
+
+/* ==========================================================================
+   DRAG TEXT
+   ========================================================================== */
+
+.drag-indicator{
+    position:absolute;
+    bottom:5%;
+    font-size:0.7rem;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:#9bb8d7;
+    font-weight: normal !important;
+    animation:pulseFade 2.4s infinite;
+}
+
+@keyframes pulseFade{
+    0%{ opacity:0.35; }
+    50%{ opacity:1; }
+    100%{ opacity:0.35; }
+}
+
+/* ==========================================================================
+   SMOOTH
+   ========================================================================== */
+
+.page.smooth-return{
+    transition: transform .5s cubic-bezier(.25,1,.5,1);
+}
+
+/* ==========================================================================
+   MOBILE FIX (PROPORSIONAL DENGAN GAMBAR MEMO)
+   ========================================================================== */
+
+@media (max-width:768px){
+
+    .memo-book{
+        width:96vw;
+        height:96vw;
+    }
+
+    .page-front{
+        padding-top:32.5%; 
+        padding-right:20%;
+        padding-bottom:24%;
+        padding-left:20%;
+        
+        justify-content:center; 
+    }
+
+    .sub-text{
+        font-size:0.93rem;
+        line-height:1.6;
+        margin-top: -15px;
+    }
+
+    /* REVISI KHUSUS HALAMAN 1 & 10: 
+       Ditarik ke atas sedikit lagi biar ga terlalu kebawah/mepet Cinnamoroll */
+    .spesial-p1-p10 {
+        transform: translateY(-14px);
+    }
+
+    .sub-text br {
+        margin: 3px 0;
+    }
+
+    .drag-indicator{
+        bottom:0.8%; 
+        font-size:0.58rem;
+        letter-spacing:1.7px;
+    }
+}
+
+/* ==========================================================================
+   Z INDEX
+   ========================================================================== */
+
+.page:nth-child(1){z-index:10;}
+.page:nth-child(2){z-index:9;}
+.page:nth-child(3){z-index:8;}
+.page:nth-child(4){z-index:7;}
+.page:nth-child(5){z-index:6;}
+.page:nth-child(6){z-index:5;}
+.page:nth-child(7){z-index:4;}
+.page:nth-child(8){z-index:3;}
+.page:nth-child(9){z-index:2;}
+.page:nth-child(10){z-index:1;}
+
+</style>
 </head>
+
 <body>
 
-    <div class="memo-book" id="memoBook">
-        
-        <div class="page">
-            <div class="page-front first-slide">
-                <div class="title-text">Hai, [Nama Dia].</div>
-                <div class="sub-text">Aku sengaja buat ini khusus untuk kamu. Tolong dibaca sampai halaman terakhir, ya.</div>
-                <div class="drag-indicator">Geser layar untuk membuka</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
+<div class="memo-book" id="memoBook">
 
-        <div class="page">
-            <div class="page-front">
-                <div class="title-text">Selamat Atas Kelulusanmu.</div>
-                <div class="sub-text">Akhirnya perjuangan kamu selama tiga tahun di SMP resmi selesai hari ini. Aku ikut bahagia.</div>
-                <div class="drag-indicator">Geser halaman</div>
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text spesial-p1-p10">
+                Hai, Nadya.<br>
+                Ada sesuatu yang pengen aku sampein khusus buat kamu. Boleh luangin<br>
+                waktu sebentar buat baca sampe akhir?.
             </div>
-            <div class="page-back"></div>
+            <div class="drag-indicator">Geser layar</div>
         </div>
-
-        <div class="page">
-            <div class="page-front">
-                <div class="title-text">Sesuatu yang Selalu Menginspirasiku.</div>
-                <div class="sub-text">Selama di sekolah, melihat bagaimana kamu tetap berusaha keras dan tersenyum di tengah lelahnya tugas selalu bikin aku kagum.</div>
-                <div class="drag-indicator">Geser halaman</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
-
-        <div class="page">
-            <div class="page-front">
-                <div class="title-text">Aku Sangat Bangga Padamu.</div>
-                <div class="sub-text">Aku tahu ada banyak hari berat yang harus kamu lalui untuk sampai di titik ini. Kamu hebat karena tidak pernah menyerah.</div>
-                <div class="drag-indicator">Geser halaman</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
-
-        <div class="page">
-            <div class="page-front">
-                <div class="title-text">Bagian Terbaik di Masa SMP.</div>
-                <div class="sub-text">Masa sekolah mungkin punya banyak cerita, tapi bagiku, mengenal kamu adalah bagian yang paling berharga dan tidak akan aku lupakan.</div>
-                <div class="drag-indicator">Geser halaman</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
-
-        <div class="page">
-            <div class="page-front">
-                <div class="title-text">Kamu Sangat Istimewa.</div>
-                <div class="sub-text">Mungkin aku jarang mengatakannya langsung, tapi kehadiran kamu selalu berhasil membuat hari-hari yang biasa saja jadi terasa jauh lebih berarti.</div>
-                <div class="drag-indicator">Geser halaman</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
-
-        <div class="page">
-            <div class="page-front">
-                <div class="title-text">Sekarang, Waktunya Menikmati Hasilnya.</div>
-                <div class="sub-text">Semua ujian sudah lewat. Tolong lupakan dulu urusan buku pelajaran, dan nikmati libur panjangmu dengan tenang.</div>
-                <div class="drag-indicator">Geser halaman</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
-
-        <div class="page">
-            <div class="page-front">
-                <div class="title-text">Langkah Baru di Putih-Abu-Abu.</div>
-                <div class="sub-text">Sebentar lagi kamu akan masuk SMA. Aku berharap kamu menemukan lingkungan yang nyaman, teman-teman yang baik, dan banyak kebahagiaan baru di sana.</div>
-                <div class="drag-indicator">Geser halaman</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
-
-        <div class="page">
-            <div class="page-front">
-                <div class="title-text">Aku Akan Tetap di Sini.</div>
-                <div class="sub-text">Ke mana pun langkah kamu membawa kamu di masa SMA nanti, aku akan tetap menjadi orang yang sama, yang selalu siap mendukung dan mendengarkan ceritamu.</div>
-                <div class="drag-indicator">Geser halaman</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
-
-        <div class="page" style="cursor: default;">
-            <div class="page-front" style="background-color: #fff4f8;">
-                <div class="title-text">Congratulations, My Favorite Person.</div>
-                <div class="sub-text">Selamat merayakan keberhasilanmu hari ini. Terima kasih sudah berjuang sejauh ini, dan terima kasih sudah menjadi kamu yang apa adanya.</div>
-            </div>
-            <div class="page-back"></div>
-        </div>
-
+        <div class="page-back"></div>
     </div>
 
-    <script>
-        const book = document.getElementById('memoBook');
-        const pages = Array.from(document.querySelectorAll('.page'));
-        const bookWidth = book.clientWidth;
-        
-        let isDragging = false;
-        let startX = 0;
-        let activePage = null;
-        let swipeDirection = null; // 'next' atau 'prev'
-        let initialRotation = 0;
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text">
+                Selamat atas kelulusanmu ya.<br>
+                Aku harap kamu tidak pernah takut untuk melangkah dan mewujudkan mimpi-mimpimu.<br>
+            </div>
+            <div class="drag-indicator">Geser halaman</div>
+        </div>
+        <div class="page-back"></div>
+    </div>
 
-        pages.forEach((page) => {
-            page.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX));
-            page.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX));
-            page.addEventListener('touchend', () => handleEnd());
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text">
+                Jujur saja, selama ini aku selalu kagum padamu karena bisa mempertahankan senyummu yang sederhana, yang membuat diriku juga merasa bahagia.
+            </div>
+            <div class="drag-indicator">Geser halaman</div>
+        </div>
+        <div class="page-back"></div>
+    </div>
 
-            page.addEventListener('mousedown', (e) => handleStart(e.clientX));
-        });
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text">
+                Aku harap, kamu selalu menemukan kebahagiaan di sepanjang langkahmu. Semoga wajahmu selalu rekah dengan senyum yang terlampau manis itu.<br>
+            </div>
+            <div class="drag-indicator">Geser halaman</div>
+        </div>
+        <div class="page-back"></div>
+    </div>
 
-        window.addEventListener('mousemove', (e) => { if (isDragging) handleMove(e.clientX); });
-        window.addEventListener('mouseup', () => { if (isDragging) handleEnd(); });
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text">
+                Di kelas 9 ini mungkin terdapat banyak cerita. Tapi bagiku, mengenalmu adalah bab terbaik yang telah kutulis dalam hidupku.
+            </div>
+            <div class="drag-indicator">Geser halaman</div>
+        </div>
+        <div class="page-back"></div>
+    </div>
 
-        function handleStart(clientX) {
-            isDragging = true;
-            startX = clientX;
-            swipeDirection = null;
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text">
+                Di antara banyaknya pertemuan, aku bersyukur dipertemukan denganmu.<br>
+                Terima kasih sudah hadir dan bertahan sampai di titik ini. 
+            </div>
+            <div class="drag-indicator">Geser halaman</div>
+        </div>
+        <div class="page-back"></div>
+    </div>
 
-            let upperIndex = -1;
-            pages.forEach((page) => {
-                const zIndex = parseInt(window.getComputedStyle(page).zIndex) || 0;
-                if (zIndex > upperIndex) { upperIndex = zIndex; }
-            });
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text">
+                Pertemuan kita adalah Qadarullah. Tanpa rencana, semesta mempertemukan kita, lalu menumbuhkan rasa yang tak pernah kuduga untukmu—yang dulunya hanya seorang asing.
+            </div>
+            <div class="drag-indicator">Geser halaman</div>
+        </div>
+        <div class="page-back"></div>
+    </div>
 
-            let activeIdx = -1;
-            for (let i = 0; i < pages.length; i++) {
-                if (!pages[i].classList.contains('flipped')) {
-                    activeIdx = i;
-                    break;
-                }
-            }
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text">
+                Kelulusan ini bukan cuma akhir dari sebuah cerita, tapi awal dari kehidupan keduamu untuk menulis bab yang baru.<br>
+                Di lembaran yang luas ini, semoga kamu bisa terus bertumbuh tanpa harus kehilangan jati dirimu yang sangat berharga itu.
+            </div>
+            <div class="drag-indicator">Geser halaman</div>
+        </div>
+        <div class="page-back"></div>
+    </div>
 
-            let relativeX = startX - book.getBoundingClientRect().left;
-            
-            if (relativeX < bookWidth * 0.4 && activeIdx > 0) {
-                activePage = pages[activeIdx - 1];
-                swipeDirection = 'prev';
-                initialRotation = -180;
-                activePage.style.zIndex = "11";
-            } else if (activeIdx !== -1 && activeIdx < pages.length - 1) {
-                activePage = pages[activeIdx];
-                swipeDirection = 'next';
-                initialRotation = 0;
-            } else {
-                activePage = null;
-            }
+    <div class="page">
+        <div class="page-front">
+            <div class="sub-text">
+                Congratulations, my favorite person.<br>
+                Terima kasih yaa, atas segala hal yang udah kamu kasih ke aku, baik yang berwujud, maupun yang tak berwujud.🐿
+            </div>
+            <div class="drag-indicator">Geser halaman</div>
+        </div>
+        <div class="page-back"></div>
+    </div>
 
-            if (activePage) { activePage.classList.remove('smooth-return'); }
+    <div class="page" style="cursor:default;">
+        <div class="page-front">
+            <div class="sub-text spesial-p1-p10">
+                Btw Nad.<br>
+                Maaf yaa, itu nama kamu di kartu ucapannya typo WKWKWK😭🙏.<br>
+                Jangan salahin aku, salahin aja seller nya Awokawokawok (ga, bercanda).🐿<br>
+                Ywdh sih gitu aja, Thankyou.💞
+            </div>
+        </div>
+        <div class="page-back"></div>
+    </div>
+
+</div>
+
+<script>
+
+const book = document.getElementById('memoBook');
+const pages = Array.from(document.querySelectorAll('.page'));
+const bookWidth = book.clientWidth;
+
+let isDragging = false;
+let startX = 0;
+let activePage = null;
+let swipeDirection = null;
+let initialRotation = 0;
+
+/* ==========================================================================
+   EVENT
+   ========================================================================== */
+
+pages.forEach((page)=>{
+
+    page.addEventListener('touchstart',(e)=>{
+        handleStart(e.touches[0].clientX);
+    });
+
+    page.addEventListener('touchmove',(e)=>{
+        handleMove(e.touches[0].clientX);
+    });
+
+    page.addEventListener('touchend',()=>{
+        handleEnd();
+    });
+
+    page.addEventListener('mousedown',(e)=>{
+        handleStart(e.clientX);
+    });
+
+});
+
+window.addEventListener('mousemove',(e)=>{
+    if(isDragging){
+        handleMove(e.clientX);
+    }
+});
+
+window.addEventListener('mouseup',()=>{
+    if(isDragging){
+        handleEnd();
+    }
+});
+
+/* ==========================================================================
+   START
+   ========================================================================== */
+
+function handleStart(clientX){
+    isDragging = true;
+    startX = clientX;
+    swipeDirection = null;
+
+    let activeIdx = -1;
+    for(let i=0;i<pages.length;i++){
+        if(!pages[i].classList.contains('flipped')){
+            activeIdx = i;
+            break;
         }
+    }
 
-        function handleMove(clientX) {
-            if (!isDragging || !activePage) return;
-            let deltaX = clientX - startX;
+    let relativeX = startX - book.getBoundingClientRect().left;
 
-            let percentage = deltaX / (bookWidth * 0.85);
-            let rotation = initialRotation + (percentage * 180);
+    if(relativeX < bookWidth * 0.4 && activeIdx > 0){
+        activePage = pages[activeIdx - 1];
+        swipeDirection = 'prev';
+        initialRotation = -180;
+        activePage.style.zIndex = "11";
+    }
+    else if(activeIdx !== -1 && activeIdx < pages.length - 1){
+        activePage = pages[activeIdx];
+        swipeDirection = 'next';
+        initialRotation = 0;
+    }
+    else{
+        activePage = null;
+    }
 
-            if (rotation < -180) rotation = -180;
-            if (rotation > 0) rotation = 0;
+    if(activePage){
+        activePage.classList.remove('smooth-return');
+    }
+}
 
-            let currentPct = Math.abs(rotation) / 180;
-            let scaleX = 1 - (Math.sin(currentPct * Math.PI) * 0.1);
+/* ==========================================================================
+   MOVE
+   ========================================================================== */
 
-            activePage.style.transform = `rotateY(${rotation}deg) scaleX(${scaleX})`;
+function handleMove(clientX){
+    if(!isDragging || !activePage) return;
+
+    let deltaX = clientX - startX;
+    let percentage = deltaX / (bookWidth * 0.85);
+    let rotation = initialRotation + (percentage * 180);
+
+    if(rotation < -180) rotation = -180;
+    if(rotation > 0) rotation = 0;
+
+    let currentPct = Math.abs(rotation) / 180;
+    let scaleX = 1 - (Math.sin(currentPct * Math.PI) * 0.1);
+
+    activePage.style.transform = `rotateY(${rotation}deg) scaleX(${scaleX})`;
+}
+
+/* ==========================================================================
+   END
+   ========================================================================== */
+
+function handleEnd(){
+    if(!isDragging || !activePage) return;
+    isDragging = false;
+
+    let transformStr = activePage.style.transform;
+    let match = transformStr.match(/rotateY\(([-\d.]+)/);
+    let currentRotation = match ? parseFloat(match[1]) : (swipeDirection === 'next' ? 0 : -180);
+
+    activePage.classList.add('smooth-return');
+
+    if(swipeDirection === 'next'){
+        if(currentRotation < -55){
+            activePage.style.transform = 'rotateY(-180deg) scaleX(0.96)';
+            activePage.classList.add('flipped');
+            let p = activePage;
+            setTimeout(()=>{
+                p.style.zIndex = "1";
+            },300);
         }
-
-        function handleEnd() {
-            if (!isDragging || !activePage) return;
-            isDragging = false;
-
-            let transformStr = activePage.style.transform;
-            let match = transformStr.match(/rotateY\(([-\d.]+)/);
-            let currentRotation = match ? parseFloat(match[1]) : (swipeDirection === 'next' ? 0 : -180);
-
-            activePage.classList.add('smooth-return');
-
-            if (swipeDirection === 'next') {
-                if (currentRotation < -55) {
-                    activePage.style.transform = 'rotateY(-180deg) scaleX(0.96)';
-                    activePage.classList.add('flipped');
-                    let p = activePage;
-                    setTimeout(() => { p.style.zIndex = "1"; }, 300);
-                } else {
-                    activePage.style.transform = 'rotateY(0deg) scaleX(1)';
-                }
-            } else if (swipeDirection === 'prev') {
-                if (currentRotation > -125) {
-                    activePage.style.transform = 'rotateY(0deg) scaleX(1)';
-                    activePage.classList.remove('flipped');
-                    let total = pages.length;
-                    let idx = pages.indexOf(activePage);
-                    pages[idx].style.zIndex = total - idx;
-                } else {
-                    activePage.style.transform = 'rotateY(-180deg) scaleX(0.96)';
-                    setTimeout(() => { activePage.style.zIndex = "1"; }, 300);
-                }
-            }
-            activePage = null;
+        else{
+            activePage.style.transform = 'rotateY(0deg) scaleX(1)';
         }
-    </script>
+    }
+    else if(swipeDirection === 'prev'){
+        if(currentRotation > -125){
+            activePage.style.transform = 'rotateY(0deg) scaleX(1)';
+            activePage.classList.remove('flipped');
+            let total = pages.length;
+            let idx = pages.indexOf(activePage);
+            pages[idx].style.zIndex = total - idx;
+        }
+        else{
+            activePage.style.transform = 'rotateY(-180deg) scaleX(0.96)';
+            setTimeout(()=>{
+                activePage.style.zIndex = "1";
+            },300);
+        }
+    }
+    activePage = null;
+}
+
+</script>
 </body>
 </html>
