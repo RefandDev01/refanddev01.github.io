@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Birthday Surprise — Name Flower</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root{
+      --bg1:#fffafc;
+      --bg2:#fff0f5;
+      --bg3:#fde4ee;
+      --bg4:#f6d2e0;
+      --bg5:#edd0dc;
+      --pink:#d97fa3;
+      --pink2:#ea8fb1;
+      --rose:#c86f8f;
+      --text:#5c4a54;
+      --shadow: 0 10px 30px rgba(202, 130, 156, .12);
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 50% 25%, var(--bg1) 0%, #fff5f8 22%, var(--bg2) 42%, var(--bg3) 68%, var(--bg4) 100%);
+      transition: background 1.4s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: column;
+      padding: 10px 10px 16px;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .scene {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,.98) 0%, rgba(255,241,247,.9) 22%, rgba(248,219,231,.72) 58%, rgba(235,200,217,.42) 100%);
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,236,245,.95) 26%, rgba(240,171,198,.65) 58%, rgba(240,171,198,0) 100%);
+      box-shadow:
+        0 0 10px rgba(255, 220, 236, .95),
+        0 0 24px rgba(235, 160, 192, .35);
+      opacity: 0;
+      z-index: 2;
+      animation: floatUp var(--dur) linear infinite;
+      animation-delay: var(--delay);
+      filter: blur(.15px);
+    }
+
+    .particle.small {
+      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,244,249,.95) 28%, rgba(223,180,255,.45) 60%, rgba(223,180,255,0) 100%);
+      box-shadow:
+        0 0 9px rgba(255, 244, 250, .92),
+        0 0 18px rgba(220, 200, 255, .28);
+    }
+
+    .particle.spark {
+      width: var(--size);
+      height: var(--size);
+      border-radius: 0;
+      background: transparent;
+      opacity: 0;
+    }
+
+    .particle.spark::before,
+    .particle.spark::after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      background: currentColor;
+      box-shadow: 0 0 12px currentColor;
+    }
+
+    .particle.spark::before {
+      width: 100%;
+      height: 2px;
+    }
+
+    .particle.spark::after {
+      width: 2px;
+      height: 100%;
+    }
+
+    .particle.spark {
+      color: rgba(255,245,250,.95);
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(18px) scale(.6);
+        opacity: 0;
+      }
+      12% {
+        opacity: .18;
+      }
+      28% {
+        opacity: .75;
+      }
+      55% {
+        opacity: .95;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.15);
+        opacity: 0;
+      }
+    }
+
+    .wrap {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 4;
+      padding-top: 4px;
+    }
+
+    h1 {
+      width: 100%;
+      font-size: clamp(1.08rem, 2.8vw, 1.3rem);
+      font-weight: 800;
+      text-align: center;
+      color: #cc7497;
+      margin-bottom: 10px;
+      letter-spacing: .2px;
+      transition: color 1s ease, font-size .35s ease, transform .35s ease;
+      text-shadow: 0 1px 0 rgba(255,255,255,.8);
+    }
+
+    .input-card {
+      width: 100%;
+      background: rgba(255,255,255,.84);
+      backdrop-filter: blur(8px);
+      padding: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(217, 127, 163, .16);
+      box-shadow: var(--shadow);
+      margin-bottom: 8px;
+      transition: opacity .45s ease, transform .45s ease, max-height .45s ease, margin .45s ease, padding .45s ease;
+      max-height: 80px;
+      overflow: hidden;
+    }
+    .input-card.gone {
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      max-height: 0;
+      margin-bottom: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-width: 0;
+    }
+
+    input[type=text] {
+      display: block;
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 1rem;
+      font-family: inherit;
+      text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: #fffdfd;
+      color: #483943;
+      border: 1.5px solid rgba(217, 127, 163, .22);
+      border-radius: 11px;
+      outline: none;
+    }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      height: min(52vh, 410px);
+      overflow: visible;
+      transition: opacity .7s ease, transform .7s ease, height .7s ease, margin .7s ease;
+      margin-top: 2px;
+      z-index: 4;
+    }
+    .stage.fading {
+      opacity: 0;
+      transform: scale(.76) translateY(12px);
+      pointer-events: none;
+    }
+
+    .stem {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      width: 0;
+      height: 0;
+      transform-origin: bottom center;
+      opacity: 0;
+      transition: opacity .5s ease, transform .8s cubic-bezier(.175, .885, .32, 1.15);
+      z-index: 5;
+    }
+
+    .stem img {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transform: translateX(-50%);
+      display: block;
+      width: auto;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .clay {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 6;
+      transition: opacity .9s ease;
+      overflow: hidden;
+    }
+    .clay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .clay::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255,255,255,.98) 0%, rgba(255,242,248,.98) 28%, rgba(248,219,231,.99) 68%, rgba(239,205,217,1) 100%);
+      z-index: 0;
+    }
+
+    .clay img {
+      position: absolute;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      object-position: center center;
+      z-index: 1;
+      filter:
+        drop-shadow(0 18px 42px rgba(182, 110, 143, .16))
+        drop-shadow(0 8px 16px rgba(182, 110, 143, .08));
+    }
+
+    .btn {
+      margin-top: 10px;
+      padding: 12px 34px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: #fff;
+      background: linear-gradient(135deg, #f4adc6, #d9779d);
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 8px 20px rgba(217, 119, 157, .24);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: visibility 0s .25s, opacity .25s ease, transform .25s ease, box-shadow .2s ease;
+      position: relative;
+      z-index: 10;
+    }
+    .btn.show {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
+      transition: visibility 0s, opacity .25s ease, transform .25s ease, box-shadow .2s ease;
+    }
+
+    .mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(53, 18, 31, .18);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .mask.on { opacity: 1; pointer-events: auto; }
+
+    .modal-box {
+      background: #fff;
+      padding: 20px 18px;
+      border-radius: 18px;
+      border: 1.5px solid rgba(217, 127, 163, .15);
+      text-align: center;
+      max-width: 300px;
+      width: 86%;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, .1);
+      transform: scale(.82);
+      transition: transform .3s ease;
+    }
+    .mask.on .modal-box { transform: scale(1); }
+    .modal-msg {
+      font-size: .96rem;
+      color: #5f4b57;
+      margin-bottom: 16px;
+      line-height: 1.65;
+      white-space: pre-line;
+    }
+    .modal-ok {
+      padding: 9px 22px;
+      font-size: .9rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: #fff;
+      background: linear-gradient(135deg, #f4adc6, #d9779d);
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 420px) {
+      body { padding-top: 8px; }
+      .stage { height: min(48vh, 380px); }
+      .clay img { object-fit: cover; }
+      .wrap { z-index: 4; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <div class="glow"></div>
+</div>
+
+<div class="wrap">
+  <h1 id="ttl">Ciee Ulang Tahun. ✨</h1>
+
+  <div class="input-card" id="inputCard">
+    <input type="text" id="nameInput" placeholder="MASUKAN NAMA KAMU" autocomplete="off" spellcheck="false">
+  </div>
+
+  <div class="stage" id="stage"></div>
+
+  <button class="btn" id="btnReveal">Pencet coba ✨</button>
+</div>
+
+<div class="clay" id="clay">
+  <img src="https://files.catbox.moe/c3ieix.png" alt="Birthday Bouquet 3D">
+</div>
+
+<div class="mask" id="modal">
+  <div class="modal-box">
+    <p class="modal-msg" id="modalMsg"></p>
+    <button class="modal-ok" id="modalOk">Oke</button>
+  </div>
+</div>
+
+<script>
+const FLOWERS = {
+  N: 'https://files.catbox.moe/gga5ou.png',
+  A: 'https://files.catbox.moe/hwqn5x.png',
+  D: 'https://files.catbox.moe/ras91y.png',
+  Y: 'https://files.catbox.moe/13onm3.png',
+  C: 'https://files.catbox.moe/bjjg6j.png',
+  I: 'https://files.catbox.moe/od66b4.png',
+  T: 'https://files.catbox.moe/cds8dv.png',
+  R: 'https://files.catbox.moe/8v5hio.png',
+  W: 'https://files.catbox.moe/pifphf.png',
+  J: 'https://files.catbox.moe/33setu.png'
+};
+const VALID = new Set(Object.keys(FLOWERS));
+const FULLNAME = 'NADYACITRAWIJAYA';
+
+const nameInput = document.getElementById('nameInput');
+const inputCard = document.getElementById('inputCard');
+const stage = document.getElementById('stage');
+const clay = document.getElementById('clay');
+const btnReveal = document.getElementById('btnReveal');
+const ttl = document.getElementById('ttl');
+const modal = document.getElementById('modal');
+const modalMsg = document.getElementById('modalMsg');
+const modalOk = document.getElementById('modalOk');
+const scene = document.getElementById('scene');
+
+let modalOpen = false;
+
+function showModal(msg, cb = null) {
+  modalOpen = true;
+  modalMsg.textContent = msg;
+  modal.classList.add('on');
+  modalOk.onclick = () => {
+    modal.classList.remove('on');
+    modalOpen = false;
+    cb && cb();
+  };
+}
+
+nameInput.addEventListener('input', () => {
+  if (modalOpen) return;
+  let v = nameInput.value.toUpperCase().replace(/\s+/g, '');
+  nameInput.value = v;
+  if (!v) { stage.innerHTML = ''; btnReveal.classList.remove('show'); return; }
+
+  const last = v.slice(-1);
+  if (!VALID.has(last)) {
+    showModal('Jangan diisi ngasal kocak.', () => {
+      nameInput.value = '';
+      stage.innerHTML = '';
+      btnReveal.classList.remove('show');
+      nameInput.focus();
+    });
+    return;
+  }
+
+  buildBouquet(v);
+
+  if (v.includes('NADYA') && v !== FULLNAME && v.length >= FULLNAME.length) {
+    showModal('Ada yang salah tuh namanya,\ncoba cek lagi.');
+    btnReveal.classList.remove('show');
+  } else {
+    btnReveal.classList.toggle('show', v === FULLNAME);
+  }
+});
+
+function buildBouquet(name) {
+  stage.innerHTML = '';
+  const n = name.length;
+  if (!n) return;
+
+  const maxAng = n === 1 ? 0 : Math.min(58, 16 + n * 2.5);
+
+  for (let i = 0; i < n; i++) {
+    const ch = name[i];
+    if (!FLOWERS[ch]) continue;
+    const stem = document.createElement('div');
+    stem.className = 'stem';
+    const img = document.createElement('img');
+    img.src = FLOWERS[ch];
+    img.loading = 'eager';
+    const rot = n === 1 ? 0 : -maxAng + (i / (n - 1)) * 2 * maxAng;
+    const edge = n === 1 ? 0 : Math.abs(i / (n - 1) * 2 - 1);
+    img.style.height = `${(46 - edge * 8).toFixed(1)}vh`;
+    img.style.maxHeight = `${Math.round(230 - edge * 36)}px`;
+    const fromCtr = Math.abs(i - (n - 1) / 2);
+    stem.style.zIndex = String(Math.round(40 - fromCtr * 2));
+    stem.appendChild(img);
+    stage.appendChild(stem);
+    setTimeout(() => {
+      stem.style.opacity = '1';
+      stem.style.transform = `rotate(${rot}deg)`;
+    }, i * 50);
+  }
+}
+
+btnReveal.addEventListener('click', e => {
+  e.preventDefault();
+  inputCard.classList.add('gone');
+  stage.classList.add('fading');
+  btnReveal.classList.remove('show');
+  ttl.textContent = 'Happy Birthday My Favorite Person 🩵️';
+  ttl.style.color = '#c86f8f';
+  ttl.style.fontSize = '1.08rem';
+  document.body.style.background =
+    'radial-gradient(circle at 50% 28%, #fffefe 0%, #fff3f7 28%, #f9dce6 64%, #f0cad8 100%)';
+  startParticles();
+  setTimeout(() => {
+    stage.innerHTML = '';
+    stage.style.height = '0';
+    stage.style.marginBottom = '0';
+    clay.classList.add('show');
+  }, 720);
+});
+
+function startParticles() {
+  scene.querySelectorAll('.particle').forEach(el => el.remove());
+  const total = 28;
+  for (let i = 0; i < total; i++) {
+    const p = document.createElement('div');
+    const kind = i % 5 === 0 ? 'spark' : (i % 3 === 0 ? 'small' : '');
+    p.className = `particle ${kind}`.trim();
+    const size = kind === 'spark' ? (Math.random() * 14 + 8) : (Math.random() * 10 + 6);
+    const x = Math.random() * 100;
+    const y = 72 + Math.random() * 35;
+    const dur = (Math.random() * 5 + 5).toFixed(2) + 's';
+    const delay = (-Math.random() * 6).toFixed(2) + 's';
+    p.style.setProperty('--size', size + 'px');
+    p.style.setProperty('--x', x + 'vw');
+    p.style.setProperty('--y', y + 'vh');
+    p.style.setProperty('--dur', dur);
+    p.style.setProperty('--delay', delay);
+    scene.appendChild(p);
+  }
+}
+
+window.addEventListener('resize', () => {});
+</script>
+</body>
+</html>
