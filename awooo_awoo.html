@@ -1,453 +1,534 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Maaf telat, Awokawok.🐿️</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Maaf telat, Awokawok.🐿️</title>
+<link rel="preload" as="image" href="https://files.catbox.moe/c3ieix.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/gga5ou.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/hwqn5x.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/ras91y.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/13onm3.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/bjjg6j.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/od66b4.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/cds8dv.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/8v5hio.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/pifphf.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/33setu.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/5vwsup.png">
+<link rel="preload" as="image" href="https://files.catbox.moe/rq5tcq.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/tq4bwb.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/5hjo7y.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/ey4qyu.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/o478bg.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/uz1597.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/v958jk.jpg">
+<link rel="preload" as="image" href="https://files.catbox.moe/aspnuy.jpg">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── design tokens ── */
+:root{
+  --bg1:#fffafc;
+  --bg2:#fff0f5;
+  --bg3:#fde4ee;
+  --bg4:#f6d2e0;
+  --bg5:#edd0dc;
+  --pink:#d97fa3;
+  --pink2:#ea8fb1;
+  --rose:#c86f8f;
+  --text:#5c4a54;
+  --shadow: 0 10px 30px rgba(202, 130, 156, .12);
+}
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background: radial-gradient(circle at 50% 25%, var(--bg1) 0%, #fff5f8 22%, var(--bg2) 42%, var(--bg3) 68%, var(--bg4) 100%);
+  transition: background 1.4s ease;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px 10px 16px;
+  color: var(--text);
+}
+/* ── ambient background scene ── */
+.scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.98) 0%, rgba(255,241,247,.9) 22%, rgba(248,219,231,.72) 58%, rgba(235,200,217,.42) 100%);
+  z-index: 1;
+}
+/* ── floating particles (diaktifkan saat reveal) ── */
+.particle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,236,245,.95) 26%, rgba(240,171,198,.65) 58%, rgba(240,171,198,0) 100%);
+  box-shadow: 0 0 10px rgba(255, 220, 236, .95), 0 0 24px rgba(235, 160, 192, .35);
+  opacity: 0;
+  z-index: 2;
+  animation: floatUp var(--dur) linear infinite;
+  animation-delay: var(--delay);
+  filter: blur(.15px);
+}
+.particle.small {
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,244,249,.95) 28%, rgba(223,180,255,.45) 60%, rgba(223,180,255,0) 100%);
+  box-shadow: 0 0 9px rgba(255, 244, 250, .92), 0 0 18px rgba(220, 200, 255, .28);
+}
+.particle.spark {
+  width: var(--size);
+  height: var(--size);
+  border-radius: 0;
+  background: transparent;
+  opacity: 0;
+  color: rgba(255,245,250,.95);
+}
+.particle.spark::before, .particle.spark::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  background: currentColor;
+  box-shadow: 0 0 12px currentColor;
+}
+.particle.spark::before { width: 100%; height: 2px; }
+.particle.spark::after { width: 2px; height: 100%; }
+@keyframes floatUp {
+  0% { transform: translateY(18px) scale(.6); opacity: 0; }
+  12% { opacity: .18; }
+  28% { opacity: .75; }
+  55% { opacity: .95; }
+  100% { transform: translateY(-120vh) scale(1.15); opacity: 0; }
+}
+/* ── TAMPILAN HALAMAN KATA KUNCI (PASSWORD SCREEN) ── */
+.pass-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 4;
+  padding-top: 40px;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pass-wrap.hidden {
+  opacity: 0;
+  transform: scale(0.92) translateY(-20px);
+  pointer-events: none;
+  position: absolute;
+}
+.pass-icon {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+  animation: bounceCute 3s ease-in-out infinite;
+  filter: drop-shadow(0 6px 12px rgba(217, 127, 163, 0.25));
+}
+.pass-sub {
+  font-size: 0.92rem;
+  color: #7a6671;
+  text-align: center;
+  margin-bottom: 22px;
+  line-height: 1.6;
+  padding: 0 20px;
+}
+@keyframes bounceCute {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.04); }
+}
+.shake-anim { animation: shakeEffect 0.4s ease-in-out; }
+@keyframes shakeEffect {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+/* ── main content wrapper ── */
+.wrap {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 4;
+  padding-top: 4px;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Sembunyikan halaman utama di awal sebelum password benar */
+.wrap.hidden {
+  opacity: 0;
+  transform: scale(0.96) translateY(20px);
+  pointer-events: none;
+  position: absolute;
+}
+h1 {
+  width: 100%;
+  font-size: clamp(1.08rem, 2.8vw, 1.3rem);
+  font-weight: 800;
+  text-align: center;
+  color: #cc7497;
+  margin-bottom: 10px;
+  letter-spacing: .2px;
+  transition: color 1s ease, font-size .35s ease, transform .35s ease;
+  text-shadow: 0 1px 0 rgba(255,255,255,.8);
+}
+/* ── input card: collapse otomatis saat reveal dipencet ── */
+.input-card {
+  width: 100%;
+  background: rgba(255,255,255,.84);
+  backdrop-filter: blur(8px);
+  padding: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(217, 127, 163, .16);
+  box-shadow: var(--shadow);
+  margin-bottom: 8px;
+  transition: opacity .45s ease, transform .45s ease, max-height .45s ease, margin .45s ease, padding .45s ease;
+  max-height: 80px;
+  overflow: hidden;
+}
+.input-card.gone {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  max-height: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+}
+input[type=text] {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: #fffdfd;
+  color: #483943;
+  border: 1.5px solid rgba(217, 127, 163, .22);
+  border-radius: 11px;
+  outline: none;
+}
+/* ── bouquet stage ── */
+.stage {
+  position: relative;
+  width: 100%;
+  height: min(52vh, 410px);
+  overflow: visible;
+  transition: opacity .7s ease, transform .7s ease, height .7s ease, margin .7s ease;
+  margin-top: 2px;
+  z-index: 4;
+}
+.stage.fading {
+  opacity: 0;
+  transform: scale(.76) translateY(12px);
+  pointer-events: none;
+}
+/* ── STEM ────────────────────────────────────────────────────────── */
+.stem {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-origin: bottom center;
+  opacity: 0;
+  transition: opacity .5s ease, transform .8s cubic-bezier(.175, .885, .32, 1.15);
+  z-index: 5;
+}
+.stem img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-50%);
+  display: block;
+  width: auto;
+  pointer-events: none;
+  user-select: none;
+}
+/* ── full-screen clay reveal overlay ── */
+/* KEMBALI KE FIXED DIKUNCI 100% SESUAI ORIGINAL KAMU */
+.clay {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 6;
+  transition: opacity .9s ease;
+  overflow: hidden;
+}
+.clay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.clay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 35%, rgba(255,255,255,.98) 0%, rgba(255,242,248,.98) 28%, rgba(248,219,231,.99) 68%, rgba(239,205,217,1) 100%);
+  z-index: 0;
+}
+.clay img {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 1;
+  filter: drop-shadow(0 18px 42px rgba(182, 110, 143, .16)) drop-shadow(0 8px 16px rgba(182, 110, 143, .08));
+}
+/* Hint Scroll text */
+.scroll-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.92rem;
+  color: #cc7497;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+  animation: bounceCute 2s infinite;
+  display: none;
+  z-index: 10;
+}
+/* ── reveal button ── */
+.btn {
+  margin-top: 10px;
+  padding: 12px 34px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #fff;
+  background: linear-gradient(135deg, #f4adc6, #d9779d);
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 8px 20px rgba(217, 119, 157, .24);
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: visibility 0s .25s, opacity .25s ease, transform .25s ease, box-shadow .2s ease;
+  position: relative;
+  z-index: 10;
+}
+.btn.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: visibility 0s, opacity .25s ease, transform .25s ease, box-shadow .2s ease;
+}
+/* ── modal overlay ── */
+.mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(53, 18, 31, .18);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
+.mask.on { opacity: 1; pointer-events: auto; }
+.modal-box {
+  background: #fff;
+  padding: 20px 18px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(217, 127, 163, .15);
+  text-align: center;
+  max-width: 300px;
+  width: 86%;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .1);
+  transform: scale(.82);
+  transition: transform .3s ease;
+}
+.mask.on .modal-box { transform: scale(1); }
+.modal-msg {
+  font-size: .96rem;
+  color: #5f4b57;
+  margin-bottom: 16px;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+.modal-ok {
+  padding: 9px 22px;
+  font-size: .9rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #fff;
+  background: linear-gradient(135deg, #f4adc6, #d9779d);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
 
-  <!-- preload semua gambar bunga agar tidak ada lag saat muncul -->
-  <link rel="preload" as="image" href="https://files.catbox.moe/c3ieix.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/gga5ou.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/hwqn5x.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/ras91y.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/13onm3.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/bjjg6j.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/od66b4.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/cds8dv.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/8v5hio.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/pifphf.png">
-  <link rel="preload" as="image" href="https://files.catbox.moe/33setu.png">
+/* ── STYLE ALBUM FOTO SCROLL ── */
+/* Modifikasi container utama agar body bisa di-scroll secara independen */
+.scroll-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.album-section {
+  width: 100%;
+  max-width: 480px;
+  padding: 40px 16px 80px;
+  display: none;
+  flex-direction: column;
+  gap: 50px;
+  z-index: 15;
+  margin-top: 100vh; /* Memberikan ruang dorong ke bawah setelah layar bunga pertama */
+}
+.album-title {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #cc7497;
+  margin-bottom: 8px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.8);
+}
+.album-desc {
+  text-align: center;
+  font-size: 0.88rem;
+  color: #7a6671;
+  margin-bottom: 20px;
+  margin-top: -4px;
+}
+.album-divider {
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #f4adc6, transparent);
+  margin: 10px auto;
+}
+.grid-halaman-1 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.grid-halaman-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.row-halaman-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.photo-frame {
+  background: #ffffff;
+  padding: 10px 10px 24px 10px;
+  box-shadow: 0 8px 24px rgba(202, 130, 156, 0.18);
+  border-radius: 4px;
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+  cursor: pointer;
+}
+.photo-frame img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 2px;
+  background: #fdf8fa;
+}
+.ratio-3-4 img { aspect-ratio: 3 / 4; }
+.ratio-4-3 img { aspect-ratio: 4 / 3; }
+.photo-frame:hover {
+  transform: translateY(-8px) scale(1.04) rotate(1deg);
+  box-shadow: 0 16px 36px rgba(182, 110, 143, 0.3);
+  z-index: 20;
+}
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* ── design tokens ── */
-    :root{
-      --bg1:#fffafc;
-      --bg2:#fff0f5;
-      --bg3:#fde4ee;
-      --bg4:#f6d2e0;
-      --bg5:#edd0dc;
-      --pink:#d97fa3;
-      --pink2:#ea8fb1;
-      --rose:#c86f8f;
-      --text:#5c4a54;
-      --shadow: 0 10px 30px rgba(202, 130, 156, .12);
-    }
-
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      overflow-x: hidden;
-      background:
-        radial-gradient(circle at 50% 25%, var(--bg1) 0%, #fff5f8 22%, var(--bg2) 42%, var(--bg3) 68%, var(--bg4) 100%);
-      transition: background 1.4s ease;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      flex-direction: column;
-      padding: 10px 10px 16px;
-      color: var(--text);
-      overflow: hidden;
-    }
-
-    /* ── ambient background scene ── */
-    .scene {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .glow {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 30%, rgba(255,255,255,.98) 0%, rgba(255,241,247,.9) 22%, rgba(248,219,231,.72) 58%, rgba(235,200,217,.42) 100%);
-      z-index: 1;
-    }
-
-    /* ── floating particles (diaktifkan saat reveal) ── */
-    .particle {
-      position: absolute;
-      left: var(--x);
-      top: var(--y);
-      width: var(--size);
-      height: var(--size);
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,236,245,.95) 26%, rgba(240,171,198,.65) 58%, rgba(240,171,198,0) 100%);
-      box-shadow:
-        0 0 10px rgba(255, 220, 236, .95),
-        0 0 24px rgba(235, 160, 192, .35);
-      opacity: 0;
-      z-index: 2;
-      animation: floatUp var(--dur) linear infinite;
-      animation-delay: var(--delay);
-      filter: blur(.15px);
-    }
-
-    .particle.small {
-      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,244,249,.95) 28%, rgba(223,180,255,.45) 60%, rgba(223,180,255,0) 100%);
-      box-shadow:
-        0 0 9px rgba(255, 244, 250, .92),
-        0 0 18px rgba(220, 200, 255, .28);
-    }
-
-    .particle.spark {
-      width: var(--size);
-      height: var(--size);
-      border-radius: 0;
-      background: transparent;
-      opacity: 0;
-      color: rgba(255,245,250,.95);
-    }
-
-    .particle.spark::before,
-    .particle.spark::after {
-      content: "";
-      position: absolute;
-      inset: 50% auto auto 50%;
-      transform: translate(-50%, -50%);
-      background: currentColor;
-      box-shadow: 0 0 12px currentColor;
-    }
-
-    .particle.spark::before { width: 100%; height: 2px; }
-    .particle.spark::after  { width: 2px; height: 100%; }
-
-    @keyframes floatUp {
-      0%   { transform: translateY(18px) scale(.6); opacity: 0; }
-      12%  { opacity: .18; }
-      28%  { opacity: .75; }
-      55%  { opacity: .95; }
-      100% { transform: translateY(-120vh) scale(1.15); opacity: 0; }
-    }
-
-    /* ── TAMPILAN HALAMAN KATA KUNCI (PASSWORD SCREEN) ── */
-    .pass-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 4;
-      padding-top: 40px;
-      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .pass-wrap.hidden {
-      opacity: 0;
-      transform: scale(0.92) translateY(-20px);
-      pointer-events: none;
-      position: absolute;
-    }
-    .pass-icon {
-      font-size: 3.5rem;
-      margin-bottom: 12px;
-      animation: bounceCute 3s ease-in-out infinite;
-      filter: drop-shadow(0 6px 12px rgba(217, 127, 163, 0.25));
-    }
-    .pass-sub {
-      font-size: 0.92rem;
-      color: #7a6671;
-      text-align: center;
-      margin-bottom: 22px;
-      line-height: 1.6;
-      padding: 0 20px;
-    }
-    @keyframes bounceCute {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-8px) scale(1.04); }
-    }
-    .shake-anim {
-      animation: shakeEffect 0.4s ease-in-out;
-    }
-    @keyframes shakeEffect {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-6px); }
-      40%, 80% { transform: translateX(6px); }
-    }
-
-    /* ── main content wrapper ── */
-    .wrap {
-      position: relative;
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 4;
-      padding-top: 4px;
-      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    /* Sembunyikan halaman utama di awal sebelum password benar */
-    .wrap.hidden {
-      opacity: 0;
-      transform: scale(0.96) translateY(20px);
-      pointer-events: none;
-      position: absolute;
-    }
-
-    h1 {
-      width: 100%;
-      font-size: clamp(1.08rem, 2.8vw, 1.3rem);
-      font-weight: 800;
-      text-align: center;
-      color: #cc7497;
-      margin-bottom: 10px;
-      letter-spacing: .2px;
-      transition: color 1s ease, font-size .35s ease, transform .35s ease;
-      text-shadow: 0 1px 0 rgba(255,255,255,.8);
-    }
-
-    /* ── input card: collapse otomatis saat reveal dipencet ── */
-    .input-card {
-      width: 100%;
-      background: rgba(255,255,255,.84);
-      backdrop-filter: blur(8px);
-      padding: 10px;
-      border-radius: 16px;
-      border: 1px solid rgba(217, 127, 163, .16);
-      box-shadow: var(--shadow);
-      margin-bottom: 8px;
-      transition: opacity .45s ease, transform .45s ease, max-height .45s ease, margin .45s ease, padding .45s ease;
-      max-height: 80px;
-      overflow: hidden;
-    }
-    .input-card.gone {
-      opacity: 0;
-      transform: translateY(-10px);
-      pointer-events: none;
-      max-height: 0;
-      margin-bottom: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      border-width: 0;
-    }
-
-    input[type=text] {
-      display: block;
-      width: 100%;
-      padding: 11px 14px;
-      font-size: 1rem;
-      font-family: inherit;
-      text-align: center;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      background: #fffdfd;
-      color: #483943;
-      border: 1.5px solid rgba(217, 127, 163, .22);
-      border-radius: 11px;
-      outline: none;
-    }
-
-    /* ── bouquet stage ── */
-    .stage {
-      position: relative;
-      width: 100%;
-      height: min(52vh, 410px);
-      overflow: visible;
-      transition: opacity .7s ease, transform .7s ease, height .7s ease, margin .7s ease;
-      margin-top: 2px;
-      z-index: 4;
-    }
-    .stage.fading {
-      opacity: 0;
-      transform: scale(.76) translateY(12px);
-      pointer-events: none;
-    }
-
-    /*
-     ── STEM ──────────────────────────────────────────────────────────
-      width:0 / height:0  → semua stem berbagi pivot rotasi yang sama.
-      left: 50% berarti tangkai keluar dari titik tengah yang sama.
-      Gambar bunga sendiri yang mengisi ke atas dan menyebar sesuai rotasi.
-      z-index tengah lebih tinggi agar tangkai tengah tampil paling depan.
-     ────────────────────────────────────────────────────────────────── */
-    .stem {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      width: 0;
-      height: 0;
-      transform-origin: bottom center;
-      opacity: 0;
-      transition: opacity .5s ease, transform .8s cubic-bezier(.175, .885, .32, 1.15);
-      z-index: 5;
-    }
-
-    .stem img {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      transform: translateX(-50%);
-      display: block;
-      width: auto;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    /* ── full-screen clay reveal overlay ── */
-    .clay {
-      position: fixed;
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 6;
-      transition: opacity .9s ease;
-      overflow: hidden;
-    }
-    .clay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .clay::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 35%, rgba(255,255,255,.98) 0%, rgba(255,242,248,.98) 28%, rgba(248,219,231,.99) 68%, rgba(239,205,217,1) 100%);
-      z-index: 0;
-    }
-
-    .clay img {
-      position: absolute;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      object-position: center center;
-      z-index: 1;
-      filter:
-        drop-shadow(0 18px 42px rgba(182, 110, 143, .16))
-        drop-shadow(0 8px 16px rgba(182, 110, 143, .08));
-    }
-
-    /* ── reveal button ── */
-    .btn {
-      margin-top: 10px;
-      padding: 12px 34px;
-      font-size: 1rem;
-      font-weight: 700;
-      font-family: inherit;
-      color: #fff;
-      background: linear-gradient(135deg, #f4adc6, #d9779d);
-      border: none;
-      border-radius: 30px;
-      box-shadow: 0 8px 20px rgba(217, 119, 157, .24);
-      cursor: pointer;
-      visibility: hidden;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: visibility 0s .25s, opacity .25s ease, transform .25s ease, box-shadow .2s ease;
-      position: relative;
-      z-index: 10;
-    }
-    .btn.show {
-      visibility: visible;
-      opacity: 1;
-      transform: translateY(0);
-      transition: visibility 0s, opacity .25s ease, transform .25s ease, box-shadow .2s ease;
-    }
-
-    /* ── modal overlay ── */
-    .mask {
-      position: fixed;
-      inset: 0;
-      background: rgba(53, 18, 31, .18);
-      backdrop-filter: blur(5px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .3s ease;
-    }
-    .mask.on { opacity: 1; pointer-events: auto; }
-
-    .modal-box {
-      background: #fff;
-      padding: 20px 18px;
-      border-radius: 18px;
-      border: 1.5px solid rgba(217, 127, 163, .15);
-      text-align: center;
-      max-width: 300px;
-      width: 86%;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, .1);
-      transform: scale(.82);
-      transition: transform .3s ease;
-    }
-    .mask.on .modal-box { transform: scale(1); }
-
-    .modal-msg {
-      font-size: .96rem;
-      color: #5f4b57;
-      margin-bottom: 16px;
-      line-height: 1.65;
-      white-space: pre-line;
-    }
-    .modal-ok {
-      padding: 9px 22px;
-      font-size: .9rem;
-      font-weight: 700;
-      font-family: inherit;
-      color: #fff;
-      background: linear-gradient(135deg, #f4adc6, #d9779d);
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    @media (max-width: 420px) {
-      body { padding-top: 8px; }
-      .stage { height: min(48vh, 380px); }
-      .clay img { object-fit: cover; }
-      .wrap { z-index: 4; }
-    }
-  </style>
+@media (max-width: 420px) {
+  body { padding-top: 8px; }
+  .stage { height: min(48vh, 380px); }
+  .wrap { z-index: 4; }
+}
+</style>
 </head>
 <body>
-
 <div class="scene" id="scene">
   <div class="glow"></div>
 </div>
+<audio id="bgMusic" src="https://cdn.jsdelivr.net/gh/RefandDev01/MyFontt/keisya-levronka-jadi-kekasihku-saja.mp3"></audio>
 
-<!-- ── HALAMAN UTAMA KATA KUNCI (PASSWORD SCREEN) ── -->
-<div class="pass-wrap" id="passPage">
-  <div class="pass-icon">🌸️💖</div>
-  <h1>Ehh, Apa Nich... ✨</h1>
-  <p class="pass-sub">Btw, Coba input kolom dibawah pake tanggal lahir mu. Terus, coba klik tombol dibawahnya. Hehe. 🐿</p>
-  
-  <div class="input-card" id="passCard">
-    <input type="text" id="passInput" placeholder="DD-MM-YYYY" maxlength="10" autocomplete="off" spellcheck="false">
-  </div>
-  
-  <button class="btn show" id="btnUnlock" style="background: linear-gradient(135deg, #f4adc6, #d9779d);">Buka Kejutan 💌</button>
-</div>
-
-<!-- ── HALAMAN UTAMA RANGKAIAN BUNGA (HIDDEN AT FIRST) ── -->
-<div class="wrap hidden" id="mainPage">
-  <h1 id="ttl">Ciee Ulang Tahun, Wkwk ✨</h1>
-
-  <div class="input-card" id="inputCard">
-    <input type="text" id="nameInput" placeholder="MASUKAN NAMA KAMU" autocomplete="off" spellcheck="false">
+<div class="scroll-container">
+  <div class="pass-wrap" id="passPage">
+    <div class="pass-icon">🌸️💖</div>
+    <h1>Ehh, Apa Nich... ✨</h1>
+    <p class="pass-sub">Btw, Coba input kolom dibawah pake tanggal lahir mu. Terus, coba klik tombol dibawahnya. Hehe. 🐿</p>
+    <div class="input-card" id="passCard">
+      <input type="text" id="passInput" placeholder="DD-MM-YYYY" maxlength="10" autocomplete="off" spellcheck="false">
+    </div>
+    <button class="btn show" id="btnUnlock" style="background: linear-gradient(135deg, #f4adc6, #d9779d);">Buka Kejutan 💌</button>
   </div>
 
-  <div class="stage" id="stage"></div>
-
-  <button class="btn" id="btnReveal">Pencet coba 🫪</button>
+  <div class="wrap hidden" id="mainPage">
+    <h1 id="ttl">Ciee Ulang Tahun, Wkwk ✨</h1>
+    <div class="input-card" id="inputCard">
+      <input type="text" id="nameInput" placeholder="MASUKAN NAMA KAMU" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="stage" id="stage"></div>
+    <button class="btn" id="btnReveal">Pencet coba 🫪</button>
+  </div>
 </div>
 
 <div class="clay" id="clay">
   <img src="https://files.catbox.moe/c3ieix.png" alt="Birthday Bouquet 3D">
+  <div class="scroll-hint" id="scrollHint">Scroll ke bawah yaa.. 👇✨</div>
+</div>
+
+<div class="album-section" id="albumSection">
+  
+  <div class="album-page">
+    <h2 class="album-title">Our Best Moments ✨</h2>
+    <p class="album-desc">Moment 11 Juni ☕</p>
+    <div class="grid-halaman-1">
+      <div class="photo-frame ratio-3-4"><img src="https://files.catbox.moe/5vwsup.png" alt="Foto 1"></div>
+      <div class="photo-frame ratio-3-4"><img src="https://files.catbox.moe/rq5tcq.jpg" alt="Foto 2"></div>
+      <div class="photo-frame ratio-3-4"><img src="https://files.catbox.moe/tq4bwb.jpg" alt="Foto 3"></div>
+      <div class="photo-frame ratio-3-4"><img src="https://files.catbox.moe/5hjo7y.jpg" alt="Foto 4"></div>
+    </div>
+  </div>
+
+  <div class="album-divider"></div>
+
+  <div class="album-page">
+    <h2 class="album-title">Throwback Memories 🗓️</h2>
+    <p class="album-desc">Weekend 31 Mei 🌊</p>
+    <div class="grid-halaman-2">
+      <div class="row-halaman-2">
+        <div class="photo-frame ratio-3-4"><img src="https://files.catbox.moe/ey4qyu.jpg" alt="Foto 1"></div>
+        <div class="photo-frame ratio-3-4"><img src="https://files.catbox.moe/o478bg.jpg" alt="Foto 2"></div>
+      </div>
+      <div class="photo-frame ratio-4-3"><img src="https://files.catbox.moe/uz1597.jpg" alt="Foto 3"></div>
+      <div class="row-halaman-2">
+        <div class="photo-frame ratio-3-4"><img src="https://files.catbox.moe/v958jk.jpg" alt="Foto 4"></div>
+        <div class="photo-frame ratio-3-4"><img src="https://files.catbox.moe/aspnuy.jpg" alt="Foto 5"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="mask" id="modal">
@@ -471,51 +552,68 @@ const FLOWERS = {
   W: 'https://files.catbox.moe/pifphf.png',
   J: 'https://files.catbox.moe/33setu.png'
 };
-const VALID    = new Set(Object.keys(FLOWERS));
+const VALID = new Set(Object.keys(FLOWERS));
 const FULLNAME = 'NADYACITRAWIJAYA';
 const PASSWORD = '15-06-2011';
 
-/* ── referensi DOM ── */
 const nameInput = document.getElementById('nameInput');
 const inputCard = document.getElementById('inputCard');
-const stage     = document.getElementById('stage');
-const clay      = document.getElementById('clay');
+const stage = document.getElementById('stage');
+const clay = document.getElementById('clay');
 const btnReveal = document.getElementById('btnReveal');
-const ttl       = document.getElementById('ttl');
-const modal     = document.getElementById('modal');
-const modalMsg  = document.getElementById('modalMsg');
-const modalOk   = document.getElementById('modalOk');
-const scene     = document.getElementById('scene');
+const ttl = document.getElementById('ttl');
+const modal = document.getElementById('modal');
+const modalMsg = document.getElementById('modalMsg');
+const modalOk = document.getElementById('modalOk');
+const scene = document.getElementById('scene');
 
-/* ── referensi DOM Baru (Password) ── */
-const passPage   = document.getElementById('passPage');
-const mainPage   = document.getElementById('mainPage');
-const passInput  = document.getElementById('passInput');
-const passCard   = document.getElementById('passCard');
-const btnUnlock  = document.getElementById('btnUnlock');
+const passPage = document.getElementById('passPage');
+const mainPage = document.getElementById('mainPage');
+const passInput = document.getElementById('passInput');
+const passCard = document.getElementById('passCard');
+const btnUnlock = document.getElementById('btnUnlock');
+const bgMusic = document.getElementById('bgMusic');
+
+const scrollHint = document.getElementById('scrollHint');
+const albumSection = document.getElementById('albumSection');
 
 let modalOpen = false;
 
-/* ── modal: keyboard HP otomatis tertutup + input dinonaktifkan saat popup aktif ── */
+const triggers = ['click', 'keydown', 'touchstart', 'mousedown', 'pointerdown'];
+function playAudio() {
+  bgMusic.play().then(() => {
+    triggers.forEach(evt => document.removeEventListener(evt, playAudio));
+  }).catch(() => {});
+}
+triggers.forEach(evt => document.addEventListener(evt, playAudio));
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    bgMusic.pause();
+  } else {
+    if (bgMusic.currentTime > 0 && !bgMusic.ended) {
+      bgMusic.play().catch(() => {});
+    }
+  }
+});
+
 function showModal(msg, cb = null) {
   modalOpen = true;
   modalMsg.textContent = msg;
-  nameInput.blur();            
-  passInput.blur();            // tutup keyboard halaman password juga
-  nameInput.disabled = true;   
-  passInput.disabled = true;   
+  nameInput.blur();
+  passInput.blur();
+  nameInput.disabled = true;
+  passInput.disabled = true;
   modal.classList.add('on');
   modalOk.onclick = () => {
     modal.classList.remove('on');
     modalOpen = false;
-    nameInput.disabled = false; 
-    passInput.disabled = false; 
+    nameInput.disabled = false;
+    passInput.disabled = false;
     if (cb) cb();
   };
 }
 
-/* ── LOGIKA HALAMAN KATA KUNCI (PASSWORD) ── */
-// Otomatis menambahkan tanda strip (-) saat mengetik tanggal
 passInput.addEventListener('input', (e) => {
   let v = e.target.value.replace(/\D/g, '');
   if (v.length > 2 && v.length <= 4) {
@@ -526,24 +624,18 @@ passInput.addEventListener('input', (e) => {
   e.target.value = v;
 });
 
-// Aksi tombol Buka Kejutan
 btnUnlock.addEventListener('click', () => {
   if (modalOpen) return;
-  
   if (passInput.value === PASSWORD) {
-    // Transisi Elegan: Sembunyikan halaman password, tampilkan halaman nama
     passPage.classList.add('hidden');
-    
     setTimeout(() => {
       passPage.style.display = 'none';
       mainPage.classList.remove('hidden');
-      nameInput.focus(); // Otomatis fokus ke input nama
+      nameInput.focus();
     }, 600);
   } else {
-    // Efek Kejutan Gagal: Animasi kartu bergetar + modal imut
     passCard.classList.add('shake-anim');
     setTimeout(() => passCard.classList.remove('shake-anim'), 400);
-    
     showModal('Masa, pura pura lupa gitu sih, \nSama tanggal lahir sendiri... 🤭💕', () => {
       passInput.value = '';
       passInput.focus();
@@ -551,15 +643,15 @@ btnUnlock.addEventListener('click', () => {
   }
 });
 
-
-/* ── handler input nama ── */
 nameInput.addEventListener('input', () => {
   if (modalOpen) return;
   let v = nameInput.value.toUpperCase().replace(/\s+/g, '');
   nameInput.value = v;
-  if (!v) { stage.innerHTML = ''; btnReveal.classList.remove('show'); return; }
-
-  /* tolak huruf yang tidak punya gambar bunga */
+  if (!v) {
+    stage.innerHTML = '';
+    btnReveal.classList.remove('show');
+    return;
+  }
   const last = v.slice(-1);
   if (!VALID.has(last)) {
     showModal('Jangan diisi ngasal kocak.', () => {
@@ -570,10 +662,7 @@ nameInput.addEventListener('input', () => {
     });
     return;
   }
-
   buildBouquet(v);
-
-  /* validasi nama lengkap */
   if (v.includes('NADYA') && v !== FULLNAME && v.length >= FULLNAME.length) {
     showModal('Ada yang salah tuh namanya,\ncoba cek lagi.');
     btnReveal.classList.remove('show');
@@ -582,101 +671,86 @@ nameInput.addEventListener('input', () => {
   }
 });
 
-/* ── bangun rangkaian bunga: setiap huruf = satu tangkai ── */
 function buildBouquet(name) {
   stage.innerHTML = '';
   const n = name.length;
   if (!n) return;
-
-  /* spread angle: membesar seiring jumlah huruf, maks 58° */
   const maxAng = n === 1 ? 0 : Math.min(58, 16 + n * 2.5);
-
   for (let i = 0; i < n; i++) {
     const ch = name[i];
     if (!FLOWERS[ch]) continue;
-
     const stem = document.createElement('div');
     stem.className = 'stem';
-
     const img = document.createElement('img');
     img.src = FLOWERS[ch];
     img.loading = 'eager';
-
-    /* rotasi kipas: didistribusikan merata dalam rentang ±maxAng */
     const rot = n === 1 ? 0 : -maxAng + (i / (n - 1)) * 2 * maxAng;
-
-    /* tangkai tepi sedikit lebih pendek → siluet kubah yang alami */
-    const edge = n === 1 ? 0 : Math.abs(i / (n - 1) * 2 - 1); // 0=tengah, 1=tepi
-    img.style.height    = `${(46 - edge * 8).toFixed(1)}vh`;
+    const edge = n === 1 ? 0 : Math.abs(i / (n - 1) * 2 - 1);
+    img.style.height = `${(46 - edge * 8).toFixed(1)}vh`;
     img.style.maxHeight = `${Math.round(230 - edge * 36)}px`;
-
-    /* tangkai tengah tampil paling depan untuk kedalaman alami */
     const fromCtr = Math.abs(i - (n - 1) / 2);
     stem.style.zIndex = String(Math.round(40 - fromCtr * 2));
-
     stem.appendChild(img);
     stage.appendChild(stem);
-
-    /* kemunculan bertahap: tangkai mengipas satu per satu */
     setTimeout(() => {
-      stem.style.opacity   = '1';
+      stem.style.opacity = '1';
       stem.style.transform = `rotate(${rot}deg)`;
     }, i * 50);
   }
 }
 
-/* ── tombol reveal: transisi ke gambar bouquet full-screen ── */
 btnReveal.addEventListener('click', e => {
   e.preventDefault();
-  inputCard.classList.add('gone');    // collapse input card
-  stage.classList.add('fading');      // fade out rangkaian bunga
-  btnReveal.classList.remove('show'); // sembunyikan tombol
-
-  ttl.textContent   = 'Happy Birthday My Favorite Person 🩵️';
-  ttl.style.color   = '#c86f8f';
+  inputCard.classList.add('gone');
+  stage.classList.add('fading');
+  btnReveal.classList.remove('show');
+  ttl.textContent = 'Happy Birthday My Favorite Person 🩵️';
+  ttl.style.color = '#c86f8f';
   ttl.style.fontSize = '1.08rem';
-
-  /* geser background ke gradient yang lebih hangat */
-  document.body.style.background =
-    'radial-gradient(circle at 50% 28%, #fffefe 0%, #fff3f7 28%, #f9dce6 64%, #f0cad8 100%)';
-
-  startParticles(); // mulai animasi partikel
-
-  /* setelah fade selesai: bersihkan stage, tampilkan clay image */
+  document.body.style.background = 'radial-gradient(circle at 50% 28%, #fffefe 0%, #fff3f7 28%, #f9dce6 64%, #f0cad8 100%)';
+  startParticles();
   setTimeout(() => {
-    stage.innerHTML    = '';
+    stage.innerHTML = '';
     stage.style.height = '0';
-    stage.style.margin = '0';       // reset semua sisi margin sekaligus
+    stage.style.margin = '0';
     clay.classList.add('show');
+    scrollHint.style.display = 'block';
+    albumSection.style.display = 'flex';
+    
+    // Memberikan izin scroll pada body setelah reveal selesai
+    document.body.style.overflowY = 'auto';
   }, 720);
 });
 
-/* ── sistem partikel CSS (32 partikel, aktif saat reveal) ── */
+// Menambahkan event untuk transisi paralaks visual saat scroll ke bawah
+window.addEventListener('scroll', () => {
+  if (clay.classList.contains('show')) {
+    let top = window.scrollY;
+    // Dorong layar bunga ke atas secara halus saat di-scroll
+    clay.style.transform = `translateY(-${top}px)`;
+  }
+});
+
 function startParticles() {
   scene.querySelectorAll('.particle').forEach(el => el.remove());
-  const total = 32; // jumlah partikel
+  const total = 32;
   for (let i = 0; i < total; i++) {
-    const p    = document.createElement('div');
+    const p = document.createElement('div');
     const kind = i % 5 === 0 ? 'spark' : (i % 3 === 0 ? 'small' : '');
     p.className = `particle ${kind}`.trim();
-
-    const size  = kind === 'spark'
-      ? (Math.random() * 14 + 8)
-      : (Math.random() * 10 + 6);
-    const x     = Math.random() * 100;
-    const y     = 72 + Math.random() * 35;
-    const dur   = (Math.random() * 5 + 5).toFixed(2) + 's';
+    const size = kind === 'spark' ? (Math.random() * 14 + 8) : (Math.random() * 10 + 6);
+    const x = Math.random() * 100;
+    const y = 72 + Math.random() * 35;
+    const dur = (Math.random() * 5 + 5).toFixed(2) + 's';
     const delay = (-Math.random() * 6).toFixed(2) + 's';
-
-    p.style.setProperty('--size',  size + 'px');
-    p.style.setProperty('--x',     x + 'vw');
-    p.style.setProperty('--y',     y + 'vh');
-    p.style.setProperty('--dur',   dur);
+    p.style.setProperty('--size', size + 'px');
+    p.style.setProperty('--x', x + 'vw');
+    p.style.setProperty('--y', y + 'vh');
+    p.style.setProperty('--dur', dur);
     p.style.setProperty('--delay', delay);
     scene.appendChild(p);
   }
 }
-
 window.addEventListener('resize', () => {});
 </script>
 </body>
